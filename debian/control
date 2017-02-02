@@ -1,0 +1,15 @@
+Source: openmediavault-domoticz
+Section: misc
+XB-Plugin-Section: utilities
+Priority: optional
+Maintainer: OpenMediaVault Plugin Developers <plugins@omv-extras.org>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.3
+Homepage: http://omv-extras.org/
+
+Package: openmediavault-domoticz
+Architecture: all
+Depends: domoticz,
+         openmediavault (>= 3.0.59),
+         ${misc:Depends}
+Description: Domoticz plugin for OpenMediaVault

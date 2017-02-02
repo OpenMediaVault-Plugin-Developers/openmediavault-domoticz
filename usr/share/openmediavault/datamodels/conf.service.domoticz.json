@@ -1,0 +1,15 @@
+{
+	"type": "config",
+	"id": "conf.service.domoticz",
+	"title": "Domoticz",
+	"queryinfo": {
+		"xpath": "//services/domoticz",
+		"iterable": false
+	},
+	"properties": {
+		"enable": {
+			"type": "boolean",
+			"default": 0
+		}
+	}
+}
