@@ -20,6 +20,9 @@ case "$1" in
             omv_config_add_key "${SERVICE_XPATH}" "httpsport" "8078"
         fi
 
+        # Reload daemon
+        systemctl daemon-reload
+
         # Activate package triggers. These triggers are only set during the
         # package installation.
         dpkg-trigger update-fixperms
