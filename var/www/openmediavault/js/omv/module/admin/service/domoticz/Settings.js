@@ -38,6 +38,46 @@ Ext.define("OMV.module.admin.service.domoticz.Settings", {
                 fieldLabel : _("Enable"),
                 checked    : false
             }]
+        }, {
+            xtype    : "fieldset",
+            title    : "HTTP settings",
+            defaults : {
+                labelSeparator : ""
+            },
+            items : [{
+                xtype      : "checkbox",
+                name       : "httpenable",
+                fieldLabel : _("HTTP Enable"),
+                checked    : true
+            }, {
+                xtype: 'numberfield',
+                name: 'httpport',
+                fieldLabel: _('HTTP Port'),
+                minValue: 8000,
+                maxValue: 10000,
+                allowDecimals: false,
+                allowBlank: true
+            }]
+        }, {
+            xtype    : "fieldset",
+            title    : "HTTPS settings",
+            defaults : {
+                labelSeparator : ""
+            },
+            items : [{
+                xtype      : "checkbox",
+                name       : "httpsenable",
+                fieldLabel : _("HTTPS Enable"),
+                checked    : true
+            }, {
+                xtype: 'numberfield',
+                name: 'httpsport',
+                fieldLabel: _('HTTPS Port'),
+                minValue: 8000,
+                maxValue: 10000,
+                allowDecimals: false,
+                allowBlank: true
+            }]
         }];
     }
 });

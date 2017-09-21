@@ -7,6 +7,22 @@
 			"enable": {
 				"type": "boolean",
 				"required": true
+			},
+			"httpenable": {
+				"type": "boolean",
+				"required": true
+			},
+			"httpport": {
+				"type": "integer",
+				"required": true
+			},
+			"httpsenable": {
+				"type": "boolean",
+				"required": true
+			},
+			"httpsport": {
+				"type": "integer",
+				"required": true
 			}
 		}
 	}

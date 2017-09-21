@@ -10,6 +10,26 @@
 		"enable": {
 			"type": "boolean",
 			"default": 0
+		},
+		"httpenable": {
+			"type": "boolean",
+			"default": 1
+		},
+		"httpport": {
+			"type": "integer",
+			"minimum": 8000,
+			"maximum": 10000,
+			"default": 8077
+		},
+		"httpsenable": {
+			"type": "boolean",
+			"default": 1
+		},
+		"httpsport": {
+			"type": "integer",
+			"minimum": 8000,
+			"maximum": 10000,
+			"default": 8078
 		}
 	}
 }

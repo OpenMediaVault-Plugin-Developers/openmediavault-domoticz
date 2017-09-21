@@ -14,7 +14,14 @@ case "$1" in
         if ! omv_config_exists "${SERVICE_XPATH}"; then
             omv_config_add_node "/config/services" "${SERVICE_XPATH_NAME}"
             omv_config_add_key "${SERVICE_XPATH}" "enable" "0"
+            omv_config_add_key "${SERVICE_XPATH}" "httpenable" "1"
+            omv_config_add_key "${SERVICE_XPATH}" "httpport" "8077"
+            omv_config_add_key "${SERVICE_XPATH}" "httpsenable" "1"
+            omv_config_add_key "${SERVICE_XPATH}" "httpsport" "8078"
         fi
+
+        # Reload daemon
+        systemctl daemon-reload
 
         # Activate package triggers. These triggers are only set during the
         # package installation.
