@@ -48,6 +48,28 @@ class OMVRpcServiceDomoticz extends \OMV\Rpc\ServiceAbstract
         $db = \OMV\Config\Database::getInstance();
         $object = $db->get('conf.service.domoticz');
         $object->setAssoc($params);
+        // Check for validity
+        if (($object->get('httpenable') !== TRUE) && ($object->get('httpsenable') !== TRUE)){
+            throw new \OMV\ConstraintException('Neither HTTP nor HTTPS service is enabled');
+        }
+        // Check if ports are identical
+        if ($object->get('httpport') === $object->get('httpsport')) {
+            throw new \OMV\ConstraintException('HTTP and HTTPS ports are identical');
+        }
+        // Generate new daemon paramter
+        $daemon = 'ExecStart=/opt/domoticz/domoticz -daemon';
+        if ($object->get('httpenable') === TRUE) {
+            $daemon .= ' -www ' . $object->get('httpport');
+        }
+        if ($object->get('httpsenable') === TRUE) {
+            $daemon .= ' -sslwww ' . $object->get('httpsport');
+        }
+        $daemon .= PHP_EOL;
+        $data = file('/lib/systemd/system/domoticz.service');
+        $data = array_map(function($data) use ($daemon) {
+            return stristr($data,'ExecStart') ? $daemon : $data;
+        }, $data);
+        file_put_contents('/lib/systemd/system/domoticz.service', implode('', $data));
         $db->set($object);
         // Return the configuration object.
         return $object->getAssoc();
