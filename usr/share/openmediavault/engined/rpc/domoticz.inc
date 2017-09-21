@@ -58,12 +58,8 @@ class OMVRpcServiceDomoticz extends \OMV\Rpc\ServiceAbstract
         }
         // Generate new daemon paramter
         $daemon = 'ExecStart=/opt/domoticz/domoticz -daemon';
-        if ($object->get('httpenable') === TRUE) {
-            $daemon .= ' -www ' . $object->get('httpport');
-        }
-        if ($object->get('httpsenable') === TRUE) {
-            $daemon .= ' -sslwww ' . $object->get('httpsport');
-        }
+        $daemon .= ' -www ' . ($object->get('httpenable') === TRUE ? $object->get('httpport') : '0');
+        $daemon .= ' -sslwww ' . ($object->get('httpsenable') === TRUE ? $object->get('httpsport') : '0');
         $daemon .= PHP_EOL;
         $data = file('/lib/systemd/system/domoticz.service');
         $data = array_map(function($data) use ($daemon) {
