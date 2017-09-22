@@ -7,26 +7,20 @@ set -e
 
 case "$1" in
     configure)
-        SERVICE_XPATH_NAME="domoticz"
-        SERVICE_XPATH="/config/services/${SERVICE_XPATH_NAME}"
-
-        # Add the default configuration
-        if ! omv_config_exists "${SERVICE_XPATH}"; then
-            omv_config_add_node "/config/services" "${SERVICE_XPATH_NAME}"
-            omv_config_add_key "${SERVICE_XPATH}" "enable" "0"
-            omv_config_add_key "${SERVICE_XPATH}" "httpenable" "1"
-            omv_config_add_key "${SERVICE_XPATH}" "httpport" "8077"
-            omv_config_add_key "${SERVICE_XPATH}" "httpsenable" "1"
-            omv_config_add_key "${SERVICE_XPATH}" "httpsport" "8078"
-        fi
-
-        # Reload daemon
-        systemctl daemon-reload
-
         # Activate package triggers. These triggers are only set during the
         # package installation.
         dpkg-trigger update-fixperms
         dpkg-trigger update-locale
+
+        # Initialize and migrate configuration database.
+        echo "Updating configuration database ..."
+        omv-confdbadm create "conf.service.domoticz"
+        if [ -n "$2" ]; then
+            omv-confdbadm migrate "conf.service.domoticz" "${2}"
+        fi
+
+        # make config file
+        omv-mkconf domoticz
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

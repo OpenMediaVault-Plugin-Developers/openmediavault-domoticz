@@ -1,0 +1,69 @@
+#!/bin/sh
+#
+# @author    Volker Theile <volker.theile@openmediavault.org>
+# @author    OpenMediaVault Plugin Developers <plugins@omv-extras.org>
+# @copyright Copyright (c) 2009-2013 Volker Theile
+# @copyright Copyright (c) 2013-2017 OpenMediaVault Plugin Developers
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+set -e
+
+. /etc/default/openmediavault
+. /usr/share/openmediavault/scripts/helper-functions
+
+XPATH_NAME="domoticz"
+XPATH="/config/services/${XPATH_NAME}"
+OVERRIDE_CONF_DIR="/etc/systemd/system/domoticz.service.d"
+OVERRIDE_CONF="${OVERRIDE_CONF_DIR}/override.conf"
+
+enable=$(omv_config_get "${XPATH}/enable")
+httpenable=$(omv_config_get "${XPATH}/httpenable")
+httpport=$(omv_config_get "${XPATH}/httpport")
+httpsenable=$(omv_config_get "${XPATH}/httpsenable")
+httpsport=$(omv_config_get "${XPATH}/httpsport")
+
+if [ "${httpenable}" = "1" ]; then
+    http=" -www ${httpport}"
+else
+    http=""
+fi
+
+if [ "${httpsenable}" = "1" ]; then
+    https=" -sslwww ${httpsport}"
+else
+    https=""
+fi
+
+if [ -z "${http}" ] && [ -z "${https}" ]; then
+    http=" -www 8077"
+fi
+
+# create directory
+mkdir -p "${OVERRIDE_CONF_DIR}"
+
+# Create override conf file
+cat <<EOF > ${OVERRIDE_CONF}
+[Service]
+EnvironmentFile=-/etc/default/domoticz
+ExecStart=
+ExecStart=/opt/domoticz/domoticz -daemon${http}${https}
+EOF
+
+# Reload daemon
+systemctl daemon-reload
+
+if [ "${enable}" = "1" ]; then
+    systemctl restart domoticz.service
+fi

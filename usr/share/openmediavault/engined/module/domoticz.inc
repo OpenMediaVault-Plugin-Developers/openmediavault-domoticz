@@ -24,6 +24,13 @@ class OMVModuleDomoticz extends \OMV\Engine\Module\ServiceAbstract
         return "Domoticz";
     }
 
+    public function applyConfig()
+    {
+        $cmd = new \OMV\System\Process("omv-mkconf", "domoticz");
+        $cmd->setRedirect2to1();
+        $cmd->execute();
+    }
+
     public function startService()
     {
         $db = \OMV\Config\Database::getInstance();

@@ -26,6 +26,7 @@ Ext.define("OMV.module.admin.service.domoticz.Settings", {
     rpcSetMethod : "setSettings",
 
     getFormItems : function() {
+        var me = this;
         return [{
             xtype    : "fieldset",
             title    : "General settings",
@@ -38,7 +39,7 @@ Ext.define("OMV.module.admin.service.domoticz.Settings", {
                 fieldLabel : _("Enable"),
                 checked    : false
             }]
-        }, {
+        },{
             xtype    : "fieldset",
             title    : "HTTP settings",
             defaults : {
@@ -48,8 +49,17 @@ Ext.define("OMV.module.admin.service.domoticz.Settings", {
                 xtype      : "checkbox",
                 name       : "httpenable",
                 fieldLabel : _("HTTP Enable"),
-                checked    : true
-            }, {
+                checked    : true,
+                listeners: {
+                    scope: me,
+                    change: function(field) {
+                        if (field.value == false) {
+                            var https = me.findField("httpsenable");
+                            https.setValue(true);
+                        }
+                    }
+                }
+            },{
                 xtype: 'numberfield',
                 name: 'httpport',
                 fieldLabel: _('HTTP Port'),
@@ -58,7 +68,7 @@ Ext.define("OMV.module.admin.service.domoticz.Settings", {
                 allowDecimals: false,
                 allowBlank: true
             }]
-        }, {
+        },{
             xtype    : "fieldset",
             title    : "HTTPS settings",
             defaults : {
@@ -68,8 +78,17 @@ Ext.define("OMV.module.admin.service.domoticz.Settings", {
                 xtype      : "checkbox",
                 name       : "httpsenable",
                 fieldLabel : _("HTTPS Enable"),
-                checked    : true
-            }, {
+                checked    : true,
+                listeners: {
+                    scope: me,
+                    change: function(field) {
+                        if (field.value == false) {
+                            var http = me.findField("httpenable");
+                            http.setValue(true);
+                        }
+                    }
+                }
+            },{
                 xtype: 'numberfield',
                 name: 'httpsport',
                 fieldLabel: _('HTTPS Port'),
