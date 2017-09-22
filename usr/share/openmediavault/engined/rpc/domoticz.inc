@@ -44,12 +44,6 @@ class OMVRpcServiceDomoticz extends \OMV\Rpc\ServiceAbstract
         $this->validateMethodContext($context, ['role' => OMV_ROLE_ADMINISTRATOR]);
         // Validate the parameters of the RPC service method.
         $this->validateMethodParams($params, 'rpc.domoticz.setsettings');
-        // Check for validity
-        if (($params['httpenable'] !== TRUE) && ($params['httpsenable'] !== TRUE)){
-            throw new \OMV\ConstraintException(
-                gettext("Neither HTTP nor HTTPS service is enabled")
-            );
-        }
         // Check if ports are identical
         if ($params['httpport'] === $params['httpsport']) {
             throw new \OMV\ConstraintException(

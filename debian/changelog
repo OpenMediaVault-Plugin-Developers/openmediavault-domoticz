@@ -1,8 +1,8 @@
-openmediavault-domoticz (3.1) UNRELEASED; urgency=medium
+openmediavault-domoticz (3.1) stable; urgency=low
 
   * Add ability to change HTTP and HTTPS ports
 
- -- OpenMediaVault Plugin Developers <plugins@omv-extras.org>  Thu, 21 Sep 2017 18:24:05 -0500
+ -- OpenMediaVault Plugin Developers <plugins@omv-extras.org>  Fri, 22 Sep 2017 06:21:09 -0500
 
 openmediavault-domoticz (3.0) stable; urgency=low
 
